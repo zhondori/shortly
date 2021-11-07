@@ -1,3 +1,3 @@
-# URL Shortner
+# URL Shortener
 
-#### Url shortner with Node.js, Express.js and MongoDB
+#### Url shortener with Node.js, Express.js and MongoDB
