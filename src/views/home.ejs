@@ -1,0 +1,49 @@
+<% var url %> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="shortcut icon" href="/public/logo.png">
+    <script src="https://cdn-tailwindcss.vercel.app"></script>
+</head>
+<body class="flex flex-row items-center justify-center min-h-screen w-full bg-blue-300">
+    <div class="w-[360px] h-auto rounded bg-green-400 p-4 py-6 text-center shadow-xl border border-green-500">
+        <h3 class="my-[10px] text-lg font-semibold tracking-wide text-white">Enter URL for shorting</h3>
+        <p class="" id="err"></p>
+        <input type="url" id="url" class="p-3 py-2 w-full outline-none rounded ring-indigo-600 focus:ring-2" placeholder="Enter Url">
+        <button type="button" id="btn" class="mt-2 block w-1/2 mx-auto p-2 py-3 text-white bg-blue-600 rounded-md ring-blue-400 transition duration-200 focus:ring-2">Shorten</button>
+        <a target="_blank" id="short-url" href="" class="block text-white mt-3 text-base font-medium"></a>
+    </div>
+    <script>
+        let btn = document.getElementById("btn");
+        let errP = document.getElementById("err");
+        let urlInput = document.getElementById("url");
+        let shortURL = document.getElementById("short-url");
+        btn.addEventListener("click", async () => {
+            let req = await fetch("/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    url: urlInput.value
+                })
+            });
+            console.log(urlInput.value)
+            let res = await req.json();
+            if(res.ok) {
+                shortURL.href = `/${res.url}`;
+                shortURL.textContent = `${window.origin}/${res.url}`;
+                errP.innerText = ""
+                errP.className = "";
+            } else {
+                errP.innerText = res.message
+                errP.className = "mb-2 w-full p-2 bg-red-500 text-white rounded";
+            }
+        })
+    </script>
+</body>
+</html>
